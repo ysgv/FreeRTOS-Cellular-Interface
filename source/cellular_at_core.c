@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Cellular Preview Release
+ * FreeRTOS-Cellular-Interface v1.2.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,8 +19,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  */
 
 /**
@@ -43,10 +43,12 @@
 
 /*-----------------------------------------------------------*/
 
-#define CHECK_IS_PREFIX_CHAR( inputChar )                                 \
+#ifndef CELLULAR_CHECK_IS_PREFIX_CHAR
+    #define CELLULAR_CHECK_IS_PREFIX_CHAR( inputChar )                    \
     ( ( ( ( int32_t ) isalpha( ( ( int8_t ) ( inputChar ) ) ) ) == 0 ) && \
       ( ( ( int32_t ) isdigit( ( ( int8_t ) ( inputChar ) ) ) ) == 0 ) && \
       ( ( inputChar ) != '+' ) && ( ( inputChar ) != '_' ) )
+#endif
 
 /*-----------------------------------------------------------*/
 
@@ -72,22 +74,21 @@ static uint8_t _charToNibble( char c );
 static void validateString( const char * pString,
                             CellularATStringValidationResult_t * pStringValidationResult )
 {
-    size_t stringLength = 0U;
+    const char * pNullCharacterLocation = NULL;
 
-    /* The strnlen() function returns strlen(s), if that is less than maxlen,
-     * or maxlen if there is no null terminating ('\0') among the first
-     * maxlen characters pointed to by s.
+    /* Validate the string length. If the string length is longer than expected, return
+     * error to stop further processing.
      *
-     * stringLength == CELLULAR_AT_MAX_STRING_SIZE is valid because it means that
-     * ( CELLULAR_AT_MAX_STRING_SIZE + 1 ) character is null terminating
-     * character.*/
-    stringLength = strnlen( pString, CELLULAR_AT_MAX_STRING_SIZE + 1U );
+     * CELLULAR_AT_MAX_STRING_SIZE defines the valid string length excluding NULL terminating
+     * character. The longest valid string has '\0' at ( CELLULAR_AT_MAX_STRING_SIZE + 1U )
+     */
+    pNullCharacterLocation = memchr( pString, '\0', ( CELLULAR_AT_MAX_STRING_SIZE + 1U ) );
 
-    if( stringLength == 0U )
+    if( pNullCharacterLocation == pString )
     {
         *pStringValidationResult = CELLULAR_AT_STRING_EMPTY;
     }
-    else if( stringLength > CELLULAR_AT_MAX_STRING_SIZE )
+    else if( pNullCharacterLocation == NULL )
     {
         *pStringValidationResult = CELLULAR_AT_STRING_TOO_LARGE;
     }
@@ -141,7 +142,7 @@ CellularATError_t Cellular_ATIsPrefixPresent( const char * pString,
                 /* It's caused by stanard api isalpha and isdigit. */
                 /* coverity[misra_c_2012_directive_4_6_violation] */
                 /* coverity[misra_c_2012_rule_10_8_violation] */
-                if( CHECK_IS_PREFIX_CHAR( ( char ) ( *ptrChar ) ) )
+                if( CELLULAR_CHECK_IS_PREFIX_CHAR( ( char ) ( *ptrChar ) ) )
                 {
                     *pResult = false;
                     break;
@@ -764,10 +765,21 @@ CellularATError_t Cellular_ATStrDup( char ** ppDst,
     char * p = NULL;
     CellularATError_t atStatus = CELLULAR_AT_SUCCESS;
     const char * pTempSrc = pSrc;
+    CellularATStringValidationResult_t stringValidationResult = CELLULAR_AT_STRING_UNKNOWN;
 
-    if( ( ppDst == NULL ) || ( pTempSrc == NULL ) || ( strnlen( pTempSrc, CELLULAR_AT_MAX_STRING_SIZE ) >= CELLULAR_AT_MAX_STRING_SIZE ) )
+    if( ( ppDst == NULL ) || ( pTempSrc == NULL ) )
     {
         atStatus = CELLULAR_AT_BAD_PARAMETER;
+    }
+
+    if( atStatus == CELLULAR_AT_SUCCESS )
+    {
+        validateString( pTempSrc, &stringValidationResult );
+
+        if( stringValidationResult != CELLULAR_AT_STRING_VALID )
+        {
+            atStatus = CELLULAR_AT_BAD_PARAMETER;
+        }
     }
 
     if( atStatus == CELLULAR_AT_SUCCESS )

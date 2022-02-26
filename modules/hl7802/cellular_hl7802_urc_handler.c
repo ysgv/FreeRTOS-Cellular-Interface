@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Cellular Preview Release
+ * FreeRTOS-Cellular-Interface v1.2.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,8 +19,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  */
 
 #include "cellular_config.h"
@@ -118,8 +118,8 @@ static void _cellular_UrcProcessKtcpInd( CellularContext_t * pContext,
             }
             else if( pSocketData->pModemData != ( void * ) ( ( uint32_t ) sessionId ) )
             {
-                LogError( "_cellular_UrcProcessKtcpInd : session not match %d socket index %d",
-                          ( uint32_t ) pSocketData->pModemData, socketIndex );
+                LogError( ( "_cellular_UrcProcessKtcpInd : session not match %d socket index %d",
+                            ( uint32_t ) pSocketData->pModemData, socketIndex ) );
             }
             else if( pSocketData->openCallback == NULL )
             {
@@ -255,8 +255,8 @@ static void _cellular_UrcProcessKtcpNotif( CellularContext_t * pContext,
             }
             else if( pSocketData->pModemData != ( void * ) ( ( uint32_t ) sessionId ) )
             {
-                LogError( "_cellular_UrcProcessKtcpNotif : session not match %d socket index %d",
-                          ( uint32_t ) pSocketData->pModemData, socketIndex );
+                LogError( ( "_cellular_UrcProcessKtcpNotif : session not match %d socket index %d",
+                            ( uint32_t ) pSocketData->pModemData, socketIndex ) );
             }
             else
             {
@@ -318,8 +318,8 @@ static void _cellular_UrcProcessKtcpData( CellularContext_t * pContext,
             }
             else if( pSocketData->pModemData != ( void * ) ( ( uint32_t ) sessionId ) )
             {
-                LogError( "_cellular_UrcProcessKtcpData : session not match %d socket index %d",
-                          ( uint32_t ) pSocketData->pModemData, socketIndex );
+                LogError( ( "_cellular_UrcProcessKtcpData : session not match %d socket index %d",
+                            ( uint32_t ) pSocketData->pModemData, socketIndex ) );
             }
             else if( pSocketData->dataReadyCallback == NULL )
             {

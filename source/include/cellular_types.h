@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Cellular Preview Release
+ * FreeRTOS-Cellular-Interface v1.2.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,8 +19,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  */
 
 /**
@@ -30,7 +30,15 @@
 #ifndef __CELLULAR_TYPES_H__
 #define __CELLULAR_TYPES_H__
 
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+/* *INDENT-ON* */
+
+/* Includes for standard bool and int. */
 #include <stdbool.h>
+#include <stdint.h>
 
 /**
  * @ingroup cellular_datatypes_paramstructs
@@ -812,5 +820,11 @@ typedef void ( * CellularSocketDataReadyCallback_t )( CellularSocketHandle_t soc
  */
 typedef void ( * CellularSocketClosedCallback_t )( CellularSocketHandle_t socketHandle,
                                                    void * pCallbackContext );
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    }
+#endif
+/* *INDENT-ON* */
 
 #endif /* __CELLULAR_TYPES_H__ */
