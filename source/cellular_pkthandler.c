@@ -733,7 +733,7 @@ CellularPktStatus_t _Cellular_AtParseInit( const CellularContext_t * pContext )
 
             if( result >= 0 )
             {
-                LogError( ( "AtParseFail for %u: %d %s %s", i, result,
+                LogError( ( "AtParseFail for %" PRIu32 ": %" PRIu32 " %s %s", i, result,
                             pTokenMap[ i ].pStrValue, pTokenMap[ i + 1U ].pStrValue ) );
                 finit = false;
             }
