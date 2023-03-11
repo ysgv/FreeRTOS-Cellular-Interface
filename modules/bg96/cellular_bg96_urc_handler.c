@@ -370,7 +370,7 @@ static void _informDataReadyToUpperLayer( CellularSocketContext_t * pSocketData 
     }
     else
     {
-        LogError( ( ( "_parseSocketUrc: Data ready callback not set!!" ) ) );
+        LogError( ( "_parseSocketUrc: Data ready callback not set!!" ) );
     }
 }
 
@@ -694,7 +694,7 @@ static void _Cellular_ProcessPowerDown( CellularContext_t * pContext,
 
     if( pContext == NULL )
     {
-        LogError( ( ( "_Cellular_ProcessPowerDown: Context not set" ) ) );
+        LogError( ( "_Cellular_ProcessPowerDown: Context not set" ) );
     }
     else
     {
@@ -715,7 +715,7 @@ static void _Cellular_ProcessPsmPowerDown( CellularContext_t * pContext,
 
     if( pContext == NULL )
     {
-        LogError( ( ( "_Cellular_ProcessPowerDown: Context not set" ) ) );
+        LogError( ( "_Cellular_ProcessPowerDown: Context not set" ) );
     }
     else
     {
